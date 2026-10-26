@@ -1,0 +1,6 @@
+@Voltaguard.Api_HostAddress = http://localhost:5286
+
+GET {{Voltaguard.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

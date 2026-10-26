@@ -1,0 +1,32 @@
+# Voltaguard-AI — Local development infrastructure
+#
+# This file defines the PostgreSQL database the .NET backend and Python AI agent
+# both connect to. Start it with:   docker compose up -d
+# Stop it (data preserved) with:    docker compose down
+# Wipe it clean with:                docker compose down -v
+#
+# The database runs on localhost:5432 from the host machine's point of view.
+# Credentials below are for LOCAL DEVELOPMENT ONLY — never use in production.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: voltaguard-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: voltaguard
+      POSTGRES_PASSWORD: voltaguard_dev_pw
+      POSTGRES_DB: voltaguard
+    ports:
+      - "5432:5432"
+    volumes:
+      - voltaguard_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U voltaguard -d voltaguard"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  voltaguard_pgdata:
+    name: voltaguard_pgdata
