@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Clean, light analytics aesthetic */
+
+:root {
+  color-scheme: light;
+  --primary: #2563eb;
+  --primary-light: #3b82f6;
+  --accent: #0891b2;
+  --success: #059669;
+  --warning: #d97706;
+  --danger: #dc2626;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  min-height: 100vh;
+}
+
+/* Soft page background with a faint grid, kept very subtle on light */
+.animated-grid-bg {
+  position: fixed;
+  inset: 0;
+  background-color: #f1f5f9;
+  background-image:
+    linear-gradient(0deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Card surface — white panels with a soft border and shadow */
+.glass {
+  @apply bg-white border border-slate-200 shadow-sm;
+}
+
+.glass-border {
+  border-color: rgb(226 232 240);
+}
+
+.glow-primary {
+  box-shadow: 0 10px 25px -10px rgba(37, 99, 235, 0.35);
+}
+
+/* Page transitions */
+@keyframes slide-fade-enter {
+  from { opacity: 0; transform: translateX(10px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slide-fade-leave {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-10px); }
+}
+
+.slide-fade-enter-active { animation: slide-fade-enter 0.3s ease-out; }
+.slide-fade-leave-active { animation: slide-fade-leave 0.3s ease-in; }
+
+/* Pulsing dot (online indicator, pending badge) */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.pulse-dot {
+  animation: pulse-dot 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@layer components {
+  .transition-smooth {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  .hover-lift {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-all duration-200 active:scale-95;
+  }
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  @apply text-slate-900;
+}
+
+/* Form controls */
+input, textarea, select {
+  @apply bg-white border border-slate-300 text-slate-800 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20;
+}
+
+input::placeholder {
+  @apply text-slate-400;
+}
+
+/* Links */
+a {
+  @apply text-blue-600 hover:text-blue-700;
+}
