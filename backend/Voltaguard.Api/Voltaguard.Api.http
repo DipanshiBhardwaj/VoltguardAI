@@ -1,0 +1,104 @@
+@Voltaguard.Api_HostAddress = http://localhost:5286
+
+# Sign in as the seeded demo customer, then paste the returned "token" below.
+@token = paste-jwt-here
+@meterAssetId = 1
+@auditReportId = 1
+
+### Register a new customer account
+POST {{Voltaguard.Api_HostAddress}}/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "new.customer@voltaguard.local",
+  "password": "Customer@123",
+  "fullName": "New Customer"
+}
+
+### Log in (seeded demo customer)
+POST {{Voltaguard.Api_HostAddress}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "customer@voltaguard.local",
+  "password": "Customer@123"
+}
+
+### Current user
+GET {{Voltaguard.Api_HostAddress}}/api/v1/auth/me
+Authorization: Bearer {{token}}
+
+### List my meters
+GET {{Voltaguard.Api_HostAddress}}/api/v1/meters
+Authorization: Bearer {{token}}
+
+### Register a meter (SlabCode: 5 = DomesticLifeline, 10 = DomesticStandard)
+POST {{Voltaguard.Api_HostAddress}}/api/v1/meters
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "serialNumber": "HPSEBL-TEST-0002",
+  "slabCode": 10
+}
+
+### Change a meter's serial number and tariff category
+PUT {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "serialNumber": "HPSEBL-DEMO-0001",
+  "slabCode": 10
+}
+
+### Delete a meter (soft delete)
+DELETE {{Voltaguard.Api_HostAddress}}/api/v1/meters/2
+Authorization: Bearer {{token}}
+
+### Most recent readings for a meter
+GET {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/readings?take=50
+Authorization: Bearer {{token}}
+
+### Readings for a date range (IST; "+" must be sent as %2B in a query string)
+GET {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/readings?from=2026-05-01T00:00:00%2B05:30&to=2026-05-31T23:59:59.999%2B05:30
+Authorization: Bearer {{token}}
+
+### Anomaly log for a date range
+GET {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/anomalies?from=2026-05-01T00:00:00%2B05:30&to=2026-05-31T23:59:59.999%2B05:30
+Authorization: Bearer {{token}}
+
+### Projected bill for the month after the latest reading
+GET {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/forecast
+Authorization: Bearer {{token}}
+
+### Upload a meter ledger (CSV)
+POST {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/telemetry
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=VoltaguardBoundary
+
+--VoltaguardBoundary
+Content-Disposition: form-data; name="file"; filename="sample-ledger-2026-05.csv"
+Content-Type: text/csv
+
+< ../../samples/sample-ledger-2026-05.csv
+--VoltaguardBoundary--
+
+### Run a billing audit (whole of May 2026, IST)
+POST {{Voltaguard.Api_HostAddress}}/api/v1/meters/{{meterAssetId}}/audit
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "billingCyclePeriod": "2026-05",
+  "fromDate": "2026-05-01T00:00:00+05:30",
+  "toDate": "2026-05-31T23:59:59.999+05:30"
+}
+
+### List my audit reports
+GET {{Voltaguard.Api_HostAddress}}/api/v1/audit-reports
+Authorization: Bearer {{token}}
+
+### One audit report, with AI findings once ready
+GET {{Voltaguard.Api_HostAddress}}/api/v1/audit-reports/{{auditReportId}}
+Authorization: Bearer {{token}}

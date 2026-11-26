@@ -1,0 +1,19 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace Voltaguard.Common.Requests;
+
+/// <summary>Details posted to create a new customer account.</summary>
+public sealed class RegisterRequest
+{
+    [Required]
+    [EmailAddress]
+    public string Email { get; init; } = string.Empty;
+
+    [Required]
+    [MinLength(6)]
+    public string Password { get; init; } = string.Empty;
+
+    [Required]
+    [MaxLength(150)]
+    public string FullName { get; init; } = string.Empty;
+}
