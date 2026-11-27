@@ -33,6 +33,9 @@ test('an upload shows accepted/rejected counts and the reason for each rejected 
 
   await uploadFile(page)
 
+  // The drop zone confirms which file was selected.
+  await expect(page.getByTestId('selected-file')).toContainText('sample-ledger-2026-05.csv')
+
   await expect(page.getByTestId('accepted-count')).toHaveText('2976 rows accepted')
   await expect(page.getByTestId('rejected-count')).toHaveText('4 rows rejected')
   const rejected = page.getByTestId('rejected-lines')

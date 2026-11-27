@@ -71,8 +71,11 @@ function onDrop(event: DragEvent) {
 }
 
 function onPick(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0]
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
   if (file) handleFile(file)
+  // Reset so picking the same file again still fires @change.
+  input.value = ''
 }
 </script>
 
@@ -116,6 +119,10 @@ function onPick(event: Event) {
       <UploadCloud class="w-12 h-12 mx-auto text-blue-400 mb-3" />
       <p class="text-slate-800 font-medium">Drag a CSV file here, or click to choose</p>
       <p class="text-xs text-slate-500 mt-1">Comma-separated, up to 10 MB</p>
+      <p v-if="lastFileName" data-testid="selected-file" class="text-sm text-slate-700 mt-3">
+        <FileCheck2 class="w-4 h-4 inline-block -mt-0.5 text-emerald-500" />
+        Selected: <span class="font-mono">{{ lastFileName }}</span>
+      </p>
       <input ref="fileInput" type="file" accept=".csv,.txt" class="hidden" @change="onPick" />
     </section>
 
