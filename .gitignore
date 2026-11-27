@@ -1,0 +1,38 @@
+# ---------- .NET (backend) ----------
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+.vs/
+
+# ---------- Node / Frontend ----------
+node_modules/
+frontend/dist/
+dist/
+*.log
+npm-debug.log*
+
+# Playwright / test output
+test-results/
+playwright-report/
+frontend/screenshots/
+frontend/screenshots-missing/
+
+# ---------- Python (ai-agent) ----------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ---------- Secrets / local config ----------
+appsettings.*.json
+!appsettings.json
+*.env
+.env
+.env.*
+
+# ---------- OS / Editor ----------
+.DS_Store
+Thumbs.db
+.idea/
